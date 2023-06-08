@@ -1,5 +1,8 @@
 # house-energy-api
+
 An API for getting potential energy savings for housing. Note, this is a very Q&D fix to deal with a last minute change in the data supplied. The data is also in a bit of crazy format, so we've normalised it a bit, and fixed the field names to be a bit more software-friendly. 
+
+First of all, you need to save the nrg.ft file (supplied separately due to license restrictions) into your local cloned folder for this repo.
 
 By default, this API servers on port 5008 but this can be changed using env variable NRG_PORT - e.g.
 
