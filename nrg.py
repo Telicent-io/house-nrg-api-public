@@ -166,6 +166,10 @@ def get_measures(df):
     return json.loads(measures.to_json(orient="records"))
 
 
+@app.get('/uprns')
+def get_uprns() -> list[str]:
+    return uprns
+
 @app.get('/building')
 def get_buildings(uprn: Annotated[list[str] | None, Query()]) -> list[Building]:
     '''
@@ -205,7 +209,7 @@ def get_buildings(uprn: Annotated[list[str] | None, Query()]) -> list[Building]:
     return buildings        
 
 @app.get('/building_denormalised')
-def get_buildings(uprn: Annotated[list[str] | None, Query()]) -> list:
+def get_buildings_den(uprn: Annotated[list[str] | None, Query()]) -> list:
     '''
     Returns all measures denormalised and using original Parity field names...which may not play nicely with REST client...be careful out there !
     '''
