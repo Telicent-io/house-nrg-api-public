@@ -87,6 +87,8 @@ class Building(BaseModel):
 
 
 df = pd.read_feather("./nrg.ft")
+uprns = set(df["UPRN"].unique())
+print(len(uprns), "Unique UPRNs")
 
 #test_house = df.loc[df["UPRN"]=="10090470558"].sort_values(by=["Index (order applied)"])
 
@@ -171,6 +173,8 @@ def get_buildings(uprn: Annotated[list[str] | None, Query()]) -> list[Building]:
     '''
     buildings = []
     for u in uprn:
+        if u not in uprns:
+            raise HTTPException(status_code=404, detail="UPRN:" + str(u) + " not found")
         parity_mess = df.loc[df["UPRN"] == u].sort_values(by=["Index (order applied)"])
         out_building = {
             "UPRN": parity_mess.iloc[0]["UPRN"],
@@ -205,6 +209,10 @@ def get_buildings(uprn: Annotated[list[str] | None, Query()]) -> list:
     '''
     Returns all measures denormalised and using original Parity field names...which may not play nicely with REST client...be careful out there !
     '''
+    for u in uprn:
+        if u not in uprns:
+            raise HTTPException(status_code=404, detail="UPRN:" + str(u) + " not found")
+
     buildings = df.loc[df["UPRN"].isin(uprn)].sort_values(by=["UPRN","Index (order applied)"])
     obj = json.loads(buildings.to_json(orient="records"))
     return obj
