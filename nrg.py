@@ -207,7 +207,7 @@ def get_buildings(uprn: Annotated[list[str] | None, Query()]) -> list:
     '''
     buildings = df.loc[df["UPRN"].isin(uprn)].sort_values(by=["UPRN","Index (order applied)"])
     obj = json.loads(buildings.to_json(orient="records"))
-    print(json.dumps(obj,indent=2))
+    return obj
 
 
 
